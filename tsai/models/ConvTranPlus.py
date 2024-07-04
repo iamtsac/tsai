@@ -164,7 +164,7 @@ class Attention_Rel_Scl(nn.Module):
         attn = torch.matmul(q, k) * self.scale # [seq_len, seq_len]
         attn = nn.functional.softmax(attn, dim=-1)
 
-        relative_bias = self.relative_bias_table.gather(0, self.relative_index.repeat(1, 8))
+        relative_bias = self.relative_bias_table.gather(0, self.relative_index.repeat(1, self.n_heads))
         relative_bias = relative_bias.reshape(self.seq_len, self.seq_len, -1).permute(2, 0, 1).unsqueeze(0)
         attn = attn + relative_bias
 
